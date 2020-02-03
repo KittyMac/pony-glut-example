@@ -15,21 +15,6 @@ void Main_runtime_override_defaults_oo(void* opt)
 	return;
 }
 
-/*
-void redraw(void)
-{
-	glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
-	
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	
-	glutSwapBuffers();
-}
-
-void reshape(int width, int height)
-{
-    glutPostRedisplay();
-}*/
-
 void idle()
 {
 	// during our glut idle we will poll the mainThreadActor, allowing it
