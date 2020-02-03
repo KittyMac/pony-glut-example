@@ -6,4 +6,4 @@ A (hopefully simple) example of a merging pony with glut.  Here are the basic st
 2. in your c code, on your "opengl thread", instiate an FFI actor
 3. periodically poll the actor from that thread (this will run called behaviours)
 
-
+![](https://github.com/KittyMac/pony_glut_example/blob/master/screenshot.png?raw=true)
