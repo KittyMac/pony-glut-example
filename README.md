@@ -18,11 +18,12 @@ actor OpenGL
 	
 ```
 
+![](https://github.com/KittyMac/pony_glut_example/blob/master/screenshot.png?raw=true)
 
 
 ## License
 
-pony.http is free software distributed under the terms of the MIT license, reproduced below. pony.http may be used for any purpose, including commercial purposes, at absolutely no cost. No paperwork, no royalties, no GNU-like "copyleft" restrictions. Just download and enjoy.
+pony-glut-example is free software distributed under the terms of the MIT license, reproduced below. pony-glut-example may be used for any purpose, including commercial purposes, at absolutely no cost. No paperwork, no royalties, no GNU-like "copyleft" restrictions. Just download and enjoy.
 
 Copyright (c) 2019 Rocco Bowling
 
