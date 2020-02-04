@@ -22,11 +22,9 @@ primitive OpenGLConstants
 
 actor OpenGL
 	"""
-	To interact with OpenGL we must only do it from the same thread that it is initialized on. To ensure this,
-	we flag this actor such that it requires a dedicated thread.
-	Note: it is our responsibility to ensure we don't start multiple instances on their own dedicated threads.
+	To interact with OpenGL we must only do it from the main thread of the program. To ensure this,
+	we flag this actor such that it uses the main thread only.
 	"""
-	
 	fun _use_main_thread():Bool => true
 	
 	fun @displayFunc() =>
