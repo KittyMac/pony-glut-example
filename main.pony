@@ -1,33 +1,56 @@
+use "framework:GLUT"
+use "framework:OpenGL"
 
 use @glClearColor[None](red:F32,green:F32,blue:F32,alpha:F32)
 use @glClear[None](mask:I32)
+
+use @glutInitWindowSize[None](w:I32, h:I32)
+use @glutInit[None](argc:Pointer[I32], argv:Pointer[None])
+use @glutInitDisplayString[None](displayString:Pointer[U8] tag)
+use @glutCreateWindow[None](windowName:Pointer[U8] tag)
+
 use @glutSwapBuffers[None]()
+use @glutMainLoop[None]()
 
 use @glutDisplayFunc[None](callback:Pointer[None])
 
-primitive OpenGL
+use @pthread_main_np[I32]()
+
+primitive OpenGLConstants
 	fun glColorBufferBit():I32 => 0x00004000
 	
 
-actor@ MainThreadActor
+actor OpenGL
 	"""
-	Allocated by the glut_main.c. It gets allocated, then unscheduled (so pony itself doesn't run)
-	it, and then it "becomes" the actor.
+	To interact with OpenGL we must only do it from the same thread that it is initialized on. To ensure this,
+	we flag this actor such that it requires a dedicated thread.
+	Note: it is our responsibility to ensure we don't start multiple instances on their own dedicated threads.
 	"""
+	
+	fun _use_main_thread():Bool => true
 	
 	fun @displayFunc() =>
 		@glClearColor(1.0, 0.0, 0.0, 1.0)
-		@glClear(OpenGL.glColorBufferBit())
+		@glClear(OpenGLConstants.glColorBufferBit())
 		@glutSwapBuffers()
 	
-	new create() =>
-		@fprintf[I32](@pony_os_stdout[Pointer[U8]](), "MainThreadActor created!\n".cstring())
+	new create(env:Env) =>
+		var argc:I32 = 0
+		var argv:Pointer[None] = Pointer[None]
 		
-		@glutDisplayFunc(addressof displayFunc)
+		@fprintf[I32](@pony_os_stdout[Pointer[U8]](), "OpenGL.create() is on main thread: %d\n".cstring(), @pthread_main_np())
+				
+	    @glutInitWindowSize(512, 512)
+	    @glutInit(addressof argc, argv)
+	    @glutInitDisplayString("rgb double depth".cstring())
+	    @glutCreateWindow("Pony GLUT".cstring())
+				
+		@glutDisplayFunc(addressof displayFunc)		
+	    @glutMainLoop()
 		
 
-// Note: no main actor is created when you compile your pony code as a library. This is not true on my fork of
-// pony, which allows you to keep a Main actor and start the library simply by calling pony_main() from your c code
-//actor Main
-//	new create(env:Env) =>
-//		env.out.print("main actor")
+actor Main
+	new create(env:Env) =>
+		OpenGL(env)
+		
+		@fprintf[I32](@pony_os_stdout[Pointer[U8]](), "Main.create() is on main thread: %d\n".cstring(), @pthread_main_np())
